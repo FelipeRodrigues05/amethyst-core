@@ -17,7 +17,19 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customer_name' => fake()->name(),
+            'customer_address' => fake()->address(),
+            'customer_phone' => fake()->phoneNumber(),
+
+            'order_status' => fake()->randomElement([
+                'order_placed',
+                'pending_confirmation',
+                'waiting_payment',
+                'payment_confirmed',
+                'order_shipped',
+                'delivered',
+            ]),
+            'product_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

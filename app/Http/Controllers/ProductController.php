@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -13,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return new ProductResource(Product::all());
     }
 
     /**
@@ -21,30 +22,67 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        try {
+            $request->validated();
+
+            Product::create($request->all());
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Product $product, string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id)->get();
+
+            return response()->json([
+                'success' => true,
+                'product' => new ProductResource($product),
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product, string $id)
     {
-        //
+        try {
+            $request->validated();
+
+            Product::findOrFail($id)->update($request->all());
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product, string $id)
     {
-        //
+        try {
+            Product::findOrFail($id)->delete();
+
+            return response()->json([
+                'success' => true,
+            ]);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }

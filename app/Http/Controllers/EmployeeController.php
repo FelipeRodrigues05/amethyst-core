@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCompanyRequest;
-use App\Http\Requests\UpdateCompanyRequest;
-use App\Http\Resources\CompanyResource;
-use App\Models\Company;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Models\Employee;
 use Exception;
 
-class CompanyController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return new CompanyResource(Company::all());
+        return new EmployeeResource(Employee::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCompanyRequest $request)
+    public function store(StoreEmployeeRequest $request)
     {
         try {
             $request->validated();
 
-            Company::create($request->all());
+            Employee::create($request->all());
 
             return response()->json([
                 'success' => true,
@@ -39,14 +39,14 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Employee $employee, string $id)
     {
         try {
-            $company = Company::findOrFail($id)->get();
+            $employee = Employee::findOrFail($id)->get();
 
             return response()->json([
                 'success' => true,
-                'company' => new CompanyResource($company),
+                'data' => $employee,
             ]);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
@@ -56,12 +56,11 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, Company $company, string $id)
+    public function update(UpdateEmployeeRequest $request, Employee $employee, string $id)
     {
         try {
             $request->validated();
-
-            Company::findOrFail($id)->update($request->all());
+            Employee::find($id)->update($request->all());
 
             return response()->json([
                 'success' => true,
@@ -74,10 +73,10 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company, string $id)
+    public function destroy(Employee $employee, string $id)
     {
         try {
-            Company::findOrFail($id)->delete();
+            Employee::findOrFail($id)->delete();
 
             return response()->json([
                 'success' => true,

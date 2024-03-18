@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\CompanyProfileEnum;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
@@ -13,7 +13,7 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -21,15 +21,15 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        //
+        return ($user->profile == CompanyProfileEnum::COMPANY_ADMIN->value || $user->profile == CompanyProfileEnum::COMPANY_EMPLOYEE->value) && $user->company_id == $product->company_id ? true : false;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Product $product): bool
     {
-        //
+        return $user->profile == CompanyProfileEnum::COMPANY_ADMIN->value && $user->company_id == $product->company_id ? true : false;
     }
 
     /**
@@ -37,7 +37,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        //
+        return $user->profile == CompanyProfileEnum::COMPANY_ADMIN->value && $user->company_id == $product->company_id ? true : false;
     }
 
     /**
@@ -45,7 +45,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        //
+        return $user->profile == CompanyProfileEnum::COMPANY_ADMIN->value && $user->company_id == $product->company_id ? true : false;
     }
 
     /**
@@ -53,7 +53,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        //
+        return $user->profile == CompanyProfileEnum::COMPANY_ADMIN->value && $user->company_id == $product->company_id ? true : false;
     }
 
     /**
@@ -61,6 +61,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        //
+        return $user->profile == CompanyProfileEnum::COMPANY_ADMIN->value && $user->company_id == $product->company_id ? true : false;
     }
 }
