@@ -21,7 +21,7 @@ class EmployeeSeeder extends Seeder
             'company_profile' => CompanyProfileEnum::COMPANY_ADMIN->value,
             'company_id' => 1,
         ]);
-        
+
         Employee::factory(10)->create();
 
     }

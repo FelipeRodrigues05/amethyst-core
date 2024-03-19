@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\DefaultCompanyResource;
 use App\Models\Company;
 use Exception;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -39,14 +41,14 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Company $company)
     {
         try {
-            $company = Company::findOrFail($id)->get();
+            $company = Company::findOrFail($company->id);
 
             return response()->json([
                 'success' => true,
-                'company' => new CompanyResource($company),
+                'company' => new DefaultCompanyResource($company),
             ]);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
@@ -56,12 +58,12 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, Company $company, string $id)
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
         try {
             $request->validated();
 
-            Company::findOrFail($id)->update($request->all());
+            Company::findOrFail($company->id)->update($request->all());
 
             return response()->json([
                 'success' => true,
@@ -74,10 +76,10 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company, string $id)
+    public function destroy(Company $company)
     {
         try {
-            Company::findOrFail($id)->delete();
+            Company::findOrFail($company->id)->delete();
 
             return response()->json([
                 'success' => true,

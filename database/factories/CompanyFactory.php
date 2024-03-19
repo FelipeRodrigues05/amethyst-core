@@ -23,7 +23,7 @@ class CompanyFactory extends Factory
             'company_email' => fake()->companyEmail(),
             'company_type' => fake()->randomElement(['pf', 'pj']),
             'product_id' => fake()->numberBetween(1, 10),
-            'employee_id' => fake()->numberBetween(1, 10)
+            'employee_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

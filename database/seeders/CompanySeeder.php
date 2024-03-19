@@ -13,12 +13,12 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         Company::factory()->create([
-            'company_name' => "Amethyst",
+            'company_name' => 'Amethyst',
             'company_phone' => '011967898414',
-            'company_email' => "amethyst@core.com",
-            'company_type' => "pj",
+            'company_email' => 'amethyst@core.com',
+            'company_type' => 'pj',
             'product_id' => 1,
-            'employee_id' => 1
+            'employee_id' => 1,
         ]);
         Company::factory(10)->create();
 
