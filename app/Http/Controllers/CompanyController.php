@@ -8,7 +8,6 @@ use App\Http\Resources\CompanyResource;
 use App\Http\Resources\DefaultCompanyResource;
 use App\Models\Company;
 use Exception;
-use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {

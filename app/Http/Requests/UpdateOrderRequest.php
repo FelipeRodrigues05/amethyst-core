@@ -32,7 +32,7 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'customer_address' => 'Endereço do Cliente',
-            'order_status' => "Status do Pedido",
+            'order_status' => 'Status do Pedido',
             'product_id' => 'ID do Produto',
         ];
     }

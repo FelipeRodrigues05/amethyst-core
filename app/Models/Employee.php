@@ -12,7 +12,8 @@ class Employee extends Model
 
     protected $fillable = ['name', 'email', 'password', 'company_profile', 'company_id'];
 
-    protected function casts() {
+    protected function casts()
+    {
         return [
             'password' => 'hashed',
         ];
