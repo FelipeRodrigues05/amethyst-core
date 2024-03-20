@@ -22,8 +22,8 @@ return new class extends Migration
             $table->integer('total_available');
             $table->integer('total_selled');
 
-            $table->foreignIdFor(Company::class, 'company_id');
-            $table->foreignIdFor(Order::class, 'order_id');
+            $table->foreignIdFor(Company::class, 'company_id')->nullable();
+            $table->foreignIdFor(Order::class, 'order_id')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

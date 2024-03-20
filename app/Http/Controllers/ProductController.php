@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\DefaultProductResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 
@@ -22,6 +23,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        // dd($request);
         try {
             $request->validated();
 
@@ -38,14 +40,14 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product, string $id)
+    public function show(Product $product)
     {
         try {
-            $product = Product::findOrFail($id)->get();
+            $product = Product::findOrFail($product->id);
 
             return response()->json([
                 'success' => true,
-                'product' => new ProductResource($product),
+                'product' => new DefaultProductResource($product),
             ]);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -55,12 +57,12 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product, string $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         try {
             $request->validated();
 
-            Product::findOrFail($id)->update($request->all());
+            Product::findOrFail($product->id)->update($request->all());
 
             return response()->json([
                 'success' => true,
@@ -73,10 +75,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product, string $id)
+    public function destroy(Product $product)
     {
         try {
-            Product::findOrFail($id)->delete();
+            Product::findOrFail($product->id)->delete();
 
             return response()->json([
                 'success' => true,
