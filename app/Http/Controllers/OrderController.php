@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\DefaultOrderResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Exception;
@@ -39,14 +40,14 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
         try {
-            $order = Order::find($id)->get();
+            $order = Order::find($order->id);
 
             return response()->json([
                 'success' => true,
-                'order' => new OrderResource($order),
+                'order' => new DefaultOrderResource($order),
             ]);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
@@ -56,12 +57,12 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order, string $id)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
         try {
             $request->validated();
 
-            Order::findOrFail($id)->updateOrFail($request->all());
+            Order::findOrFail($order->id)->updateOrFail($request->all());
 
             return response()->json([
                 'success' => true,
@@ -74,10 +75,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order, string $id)
+    public function destroy(Order $order)
     {
         try {
-            Order::findOrFail($id)->delete();
+            Order::findOrFail($order->id)->delete();
 
             return response()->json([
                 'success' => true,

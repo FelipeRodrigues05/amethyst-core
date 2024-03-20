@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Resources\DefaultEmployeeResource;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Exception;
@@ -39,14 +40,14 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee, string $id)
+    public function show(Employee $employee)
     {
         try {
-            $employee = Employee::findOrFail($id)->get();
+            $employee = Employee::findOrFail($employee->id);
 
             return response()->json([
                 'success' => true,
-                'data' => $employee,
+                'data' => new DefaultEmployeeResource($employee),
             ]);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
@@ -56,11 +57,11 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEmployeeRequest $request, Employee $employee, string $id)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         try {
             $request->validated();
-            Employee::find($id)->update($request->all());
+            Employee::find($employee->id)->update($request->all());
 
             return response()->json([
                 'success' => true,
@@ -73,10 +74,10 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee, string $id)
+    public function destroy(Employee $employee)
     {
         try {
-            Employee::findOrFail($id)->delete();
+            Employee::findOrFail($employee->id)->delete();
 
             return response()->json([
                 'success' => true,
