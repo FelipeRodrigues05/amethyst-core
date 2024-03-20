@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\CompanyProfileEnum;
+use App\Enums\UserProfileEnum;
 use App\Models\Employee;
 use App\Models\User;
 
@@ -10,9 +12,9 @@ class EmployeePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 
     /**
@@ -20,15 +22,15 @@ class EmployeePolicy
      */
     public function view(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value || $employee->id == $user->id ? true : false;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 
     /**
@@ -36,7 +38,7 @@ class EmployeePolicy
      */
     public function update(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 
     /**
@@ -44,7 +46,7 @@ class EmployeePolicy
      */
     public function delete(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 
     /**
@@ -52,7 +54,7 @@ class EmployeePolicy
      */
     public function restore(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 
     /**
@@ -60,6 +62,6 @@ class EmployeePolicy
      */
     public function forceDelete(User $user, Employee $employee): bool
     {
-        //
+        return $user->profile === UserProfileEnum::ADMIN->value || $employee->profile == CompanyProfileEnum::COMPANY_ADMIN->value ? true : false;
     }
 }
